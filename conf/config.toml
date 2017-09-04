@@ -1,0 +1,6 @@
+listen_addr = ":50051"
+
+[mysql_conf]
+dsn = "root:@tcp(localhost:3306)/archi?charset=utf8&loc=UTC&parseTime=true"
+maxconn = 100
+maxidle = 20

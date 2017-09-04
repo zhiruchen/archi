@@ -1,5 +1,9 @@
 package infrastructure
 
+import (
+	"github.com/satori/go.uuid"
+)
+
 func GenID() string {
-	return ""
+	return uuid.NewV4().String()
 }
