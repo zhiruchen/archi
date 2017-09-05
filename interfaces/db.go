@@ -20,6 +20,10 @@ type DbRepo struct {
 
 type DbQuestion DbRepo
 
+func NewDBQuestion(db DBer) *DbQuestion {
+	return &DbQuestion{dbHandler: db}
+}
+
 func (repo *DbQuestion) Create(q *domain.Question) (*domain.Question, error) {
 	_sql := "insert into question(id, user_id, title, content) values(?, ?, ?, ?)"
 

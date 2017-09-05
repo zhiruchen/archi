@@ -10,7 +10,7 @@ import (
 
 var Db *sql.DB
 
-func InitMysql(c *conf.MySQLConfig) error {
+func InitMysql(c *conf.MySQLConfig) {
 	pool, err := sql.Open("mysql", c.Dsn)
 	if err != nil {
 		panic(err)

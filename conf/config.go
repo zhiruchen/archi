@@ -24,7 +24,7 @@ func LoadConfig(path string) error {
 	if e != nil {
 		return e
 	}
-	if _, err := toml.Decode(string(content), &Config); err != nil {
+	if _, err := toml.Decode(string(content), &Conf); err != nil {
 		return err
 	}
 	return nil

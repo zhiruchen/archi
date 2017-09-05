@@ -1,13 +1,16 @@
 package main
 
 import (
+	"flag"
 	"net"
 
 	"google.golang.org/grpc"
 
 	"github.com/zhiruchen/archi/conf"
 	"github.com/zhiruchen/archi/infrastructure"
+	"github.com/zhiruchen/archi/interfaces"
 	pb "github.com/zhiruchen/archi/pb"
+	"github.com/zhiruchen/archi/usecases"
 )
 
 func main() {
@@ -15,18 +18,21 @@ func main() {
 	flag.Parse()
 
 	conf.LoadConfig(*configPath)
-	infrastructure.InitMysql(conf.Config.MysqlConf)
+	infrastructure.InitMysql(conf.Conf.MysqlConf)
 
-	listen, err := net.Listen("tcp", conf.Config.ListenAddr)
+	listen, err := net.Listen("tcp", conf.Conf.ListenAddr)
 	if err != nil {
 		panic(err)
 	}
 
-	// server := &infrastructure.RPCHandler{QuestionInteractor: }
+	server := &interfaces.RPCHandler{
+		QuestionInteractor: &usecases.QuestionInteractor{
+			QuestionStore: interfaces.NewDBQuestion(infrastructure.Db),
+		},
+	}
 
 	s := grpc.NewServer()
-	pb.RegisterArchiServer(s)
-
+	pb.RegisterArchiServer(s, server)
 	err = s.Serve(listen)
 	if err != nil {
 		panic(err)
